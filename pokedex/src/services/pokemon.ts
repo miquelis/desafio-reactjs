@@ -19,10 +19,10 @@ export async function getPokemons() {
   }
 }
 
-export async function getPokemon(id: string) {
+export async function getPokemon(id: string | number) {
   try {
     const response = await axios.get(`${BASE_URL}/pokemon/${id}`)
-    const pokemon = response.data as Pokemon
+    const pokemon = response.data as Pokemon[]
     return pokemon
   } catch (error) {
     console.error(error)

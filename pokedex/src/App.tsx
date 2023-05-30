@@ -1,33 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ReactElement, useEffect, useState } from 'react'
+import './styles/App.css'
+import { getPokemons } from './services/pokemon'
+import PokemonCard from './components/PokemonCard'
+import Modal from './components/Modal'
+import useModal from './hooks/useModal'
+import PokemonDetails from './components/PokemonDetails'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from './store'
+import { selectPokemon } from './store/modules/pokemonSlice'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const pokemon = useSelector((state: RootState) => state.pokemon)
+  const dispatch = useDispatch()
+  const [pokemonCards, setPokemonCards] = useState<ReactElement[]>([])
+  const { isOpen, toggle } = useModal();
+  const [selectedPokemon, setSelectedPokemon] = useState<number>(1)
+
+
+  useEffect(() => {
+    const handleDetails = (id: number) => {
+      toggle()
+      setSelectedPokemon(id)
+    }
+
+    getPokemons().then((pokemons) => {
+      if (!pokemons) {
+        return
+      }
+      const pokemonCards = pokemons.map((pokemon) => {
+        return (
+          <li onClick={()=> handleDetails(pokemon.id)} key={pokemon.id}>
+            <PokemonCard  {...pokemon} />
+            <button onClick={(e) =>{ e.stopPropagation(); dispatch(selectPokemon(pokemon.id)) }}>Capturar</button>
+          </li>
+       )
+      })
+      setPokemonCards(pokemonCards)
+    })
+  }, [toggle, dispatch])
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <h1>{ pokemon.selectedPokemons.length }</h1>
+    <h2>{ pokemon.selectedPokemons }</h2>
+    <ul>
+      {pokemonCards} 
+    </ul>
+      
+      <Modal  isOpen={isOpen} toggle={toggle}>
+        <PokemonDetails id={selectedPokemon} />
+      </Modal>
     </>
   )
 }
