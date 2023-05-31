@@ -19,6 +19,22 @@ export async function getPokemons() {
   }
 }
 
+export async function getPokemonsByType(type: string) {
+  try {
+    const response = await axios.get(`${BASE_URL}/type/${type}`)
+    const pokemonsByType = response.data.pokemon as Array<{ slot: number, pokemon: PokemonSimple }>
+    return pokemonsByType.map(pokemon => {
+      return {
+        id: getNumberInsideBars(pokemon.pokemon.url),
+        name: pokemon.pokemon.name,
+        url: pokemon.pokemon.url
+      }
+    }) as PokemonSimple[]
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export async function getPokemon(id: string | number) {
   try {
     const response = await axios.get(`${BASE_URL}/pokemon/${id}`)
