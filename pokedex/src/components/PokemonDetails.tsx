@@ -2,9 +2,9 @@ import { useEffect } from "react"
 import { getPokemon } from "../services/pokemon"
 
 interface PokemonDetailsProps {
-  id: number|string
+  id: number | string
 }
-function PokemonDetails(props: PokemonDetailsProps) {
+export default function PokemonDetails(props: PokemonDetailsProps) {
 
   useEffect(() => {
     getPokemon(props.id).then((pokemon) => {
@@ -18,5 +18,3 @@ function PokemonDetails(props: PokemonDetailsProps) {
     </div>
   )
 }
-
-export default PokemonDetails

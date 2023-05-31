@@ -1,9 +1,13 @@
-import { PokemonSimple } from '../interfaces/pokemon'
 import { selectPokemon, removeSelectedPokemon } from '../store/modules/pokemonSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 
-function PokemonCard(props: PokemonSimple) {
+interface PokemonCardProps {
+  id: number
+  name: string
+}
+
+export default function PokemonCard(props: PokemonCardProps) {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const dispatch = useDispatch()
   const isSelected = pokemon.selectedPokemons.includes(props.id as never)
@@ -37,5 +41,3 @@ function PokemonCard(props: PokemonSimple) {
     </div>
   )
 }
-
-export default PokemonCard

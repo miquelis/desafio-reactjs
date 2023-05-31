@@ -5,7 +5,7 @@ interface ModalProps {
   isOpen: boolean;
   toggle: () => void;
 }
-function Modal(props: ModalProps) {
+export default function Modal(props: ModalProps) {
 
   return (
     <>
@@ -25,5 +25,3 @@ function Modal(props: ModalProps) {
     
   )
 }
-
-export default Modal

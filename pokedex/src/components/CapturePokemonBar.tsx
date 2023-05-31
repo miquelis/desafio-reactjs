@@ -3,7 +3,7 @@ import { capturePokemon, removeSelectedPokemon } from '../store/modules/pokemonS
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 
-export const CapturePokemonBar = () => {
+export default function CapturePokemonBar() {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const dispatch = useDispatch()
   const confirmCapture = () => {
@@ -17,5 +17,3 @@ export const CapturePokemonBar = () => {
     </div>
   )
 }
-
-export default CapturePokemonBar

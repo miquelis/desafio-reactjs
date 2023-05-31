@@ -22,8 +22,8 @@ export async function getPokemons() {
 export async function getPokemon(id: string | number) {
   try {
     const response = await axios.get(`${BASE_URL}/pokemon/${id}`)
-    const pokemon = response.data as Pokemon[]
-    return pokemon
+    const pokemon = response.data as Pokemon
+    return pokemon as Pokemon
   } catch (error) {
     console.error(error)
   }
