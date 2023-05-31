@@ -93,3 +93,9 @@ export interface GameIndice {
     url: string;
   };
 }
+
+export interface CaughtPokemon {
+  id: number;
+  name: string;
+  customPhoto: string;
+}

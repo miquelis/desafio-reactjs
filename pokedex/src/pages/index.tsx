@@ -18,7 +18,7 @@ export default function Index() {
   const [selectedPokemon, setSelectedPokemon] = useState<number>(0)
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<ReactElement[]|null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
  
     setSearchTerm(event.target.value.trim());

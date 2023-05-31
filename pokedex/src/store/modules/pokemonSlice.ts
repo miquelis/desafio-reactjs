@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { CaughtPokemon } from '../../interfaces/pokemon'
 
 const initialState = {
   selectedPokemons: [],
@@ -9,20 +10,20 @@ export const pokemonSlice = createSlice({
   name: 'pokemon',
   initialState,
   reducers: {
-    selectPokemon: (state: { selectedPokemons: Array<number> }, action: { payload: number }) => {
+    selectPokemon: (state: { selectedPokemons: Array<CaughtPokemon> }, action: { payload: CaughtPokemon }) => {
       state.selectedPokemons = [...state.selectedPokemons, action.payload]
     },
-    removeSelectedPokemon: (state: { selectedPokemons: Array<number> }, action: { payload: number[] }) => {
-      state.selectedPokemons = state.selectedPokemons.filter(pokemon => !action.payload.includes(pokemon))
+    removeSelectedPokemon: (state: { selectedPokemons: Array<CaughtPokemon> }, action: { payload: CaughtPokemon }) => {
+      state.selectedPokemons = state.selectedPokemons.filter(pokemon => pokemon.id !== action.payload.id)
     },
-    capturePokemon: (state: { caughtPokemons: Array<number> }, action: { payload: number[] }) => {
-      state.caughtPokemons = [...state.caughtPokemons, ...action.payload]
+    cleanSelectedPokemons: (state: { selectedPokemons: Array<CaughtPokemon> }) => {
+      state.selectedPokemons = []
     },
-    removeCaughtPokemon: (state: { caughtPokemons: Array<number> }, action: { payload: number }) => {
-      state.caughtPokemons = state.caughtPokemons.filter(pokemon => pokemon !== action.payload)
+    updateCaughtPokemons: (state: { caughtPokemons: Array<CaughtPokemon> }, action: { payload: CaughtPokemon[] }) => {
+      state.caughtPokemons = action.payload
     }
   },
 })
 
-export const { selectPokemon, capturePokemon, removeSelectedPokemon, removeCaughtPokemon } = pokemonSlice.actions
+export const { selectPokemon, removeSelectedPokemon, updateCaughtPokemons, cleanSelectedPokemons } = pokemonSlice.actions
 export default pokemonSlice.reducer

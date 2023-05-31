@@ -1,43 +1,60 @@
 import { selectPokemon, removeSelectedPokemon } from '../store/modules/pokemonSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
+import { CaughtPokemon } from '../interfaces/pokemon'
+import { removeCaughtPokemon } from '../services/database'
 
 interface PokemonCardProps {
   id: number
   name: string
+  isPokedex?: boolean
 }
 
 export default function PokemonCard(props: PokemonCardProps) {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const dispatch = useDispatch()
-  const isSelected = pokemon.selectedPokemons.includes(props.id as never)
-  const isCaught = pokemon.caughtPokemons.includes(props.id as never)
+  const isSelected = pokemon.selectedPokemons.some((pokemon: CaughtPokemon) => pokemon.id === props.id)
+  const isCaught =pokemon.caughtPokemons.some((pokemon: CaughtPokemon) => pokemon.id === props.id)
   const buttonText = ()=>{
     if(isCaught) {
       return 'Capturado'
     }
     if(isSelected) {
-      return 'Selecionado'
+      return 'Remover'
     }else{
       return 'Selecionar'
     }
   }
-
-  const handleSelectPokemon = (id: number, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleRemovePokemon = (id: number, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation()
+    removeCaughtPokemon(id)
+    .then(() => {
+      console.log('Pokémon removido com sucesso!');
+     
+    })
+    .catch((error) => {
+      console.error('Erro ao remover Pokémon:', error);
+    });
+  }
+  const handleSelectPokemon = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.stopPropagation()
 
     if(isSelected) {
-      dispatch(removeSelectedPokemon([id]))
+      dispatch(removeSelectedPokemon({id: props.id, name:props.name, customPhoto:''}))
     }else{
-      dispatch(selectPokemon(id))
+      dispatch(selectPokemon({id: props.id, name:props.name, customPhoto:''}))
     }
   }
+
+
+
   return (
     <div>
       <h1>{props.name}</h1>
       <h2>{ String(isSelected) }</h2>
       <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={props.name} />
-      <button onClick={(event) => handleSelectPokemon(props.id, event) } disabled={isCaught}>{ buttonText() }</button>
+      {props.isPokedex? <button onClick={(event)=>handleRemovePokemon(props.id, event)}>Remover</button>: <button onClick={(event) => handleSelectPokemon(event) } disabled={isCaught}>{ buttonText() }</button>}
+      
     </div>
   )
 }

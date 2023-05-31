@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
+import { Ability, Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
 import { getNumberInsideBars } from '../utils/strings'
 const BASE_URL = 'https://pokeapi.co/api/v2'
 
@@ -40,6 +40,16 @@ export async function getPokemon(id: string | number) {
     const response = await axios.get(`${BASE_URL}/pokemon/${id}`)
     const pokemon = response.data as Pokemon
     return pokemon as Pokemon
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function getAbilityShortEffect(id: string | number) {
+  try {
+    const response = await axios.get(`${BASE_URL}/ability/${id}`)
+    const ability = response.data
+    return ability.effect_entries[0].short_effect as string
   } catch (error) {
     console.error(error)
   }
