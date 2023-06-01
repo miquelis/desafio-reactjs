@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Ability, Evolution, EvolutionChain, Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
+import { Evolution, EvolutionChain, Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
 import { getNumberInsideBars } from '../utils/strings'
 const BASE_URL = 'https://pokeapi.co/api/v2'
 
