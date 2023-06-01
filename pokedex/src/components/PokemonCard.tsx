@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 import { CaughtPokemon } from '../interfaces/pokemon'
 import { removeCaughtPokemon } from '../services/database'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/PokemonCard.css'
 
@@ -52,7 +52,7 @@ export default function PokemonCard(props: PokemonCardProps) {
 
   return (
     <div className='PokemonCard'>
-      <ToastContainer />
+      
       <img className='PokemonCard__Image' src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={props.name} />
       <div>
         <h1 className='PokemonCard__Name'>{props.name}</h1>

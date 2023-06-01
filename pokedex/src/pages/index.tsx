@@ -10,7 +10,7 @@ import { RootState } from '../store'
 import CapturePokemonBar from '../components/CapturePokemonBar'
 import { Link } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Index() {
@@ -89,7 +89,7 @@ export default function Index() {
 
   return (
     <>
-      <ToastContainer />
+     
       <Modal  isOpen={isOpen} toggle={toggle}>
         <PokemonDetails id={selectedPokemon} />
       </Modal>

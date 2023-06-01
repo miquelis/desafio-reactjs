@@ -49,7 +49,7 @@ export async function getAbilityShortEffect(id: string | number) {
   try {
     const response = await axios.get(`${BASE_URL}/ability/${id}`)
     const ability = response.data
-    return ability.effect_entries[0].short_effect as string
+    return ability.effect_entries[1].short_effect as string
   } catch (error) {
     throw new Error("Erro ao buscar habilidade")
   }
