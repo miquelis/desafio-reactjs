@@ -21,7 +21,6 @@ export function openDB(): Promise<IDBDatabase> {
     request.onsuccess = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
       resolve(db);
-      console.log('Database opened successfully')
 
     };
 
@@ -43,15 +42,14 @@ export function getAllCaughtPokemons(): Promise<CaughtPokemon[]> {
         request.onsuccess = () => {
           const pokemons: CaughtPokemon[] = request.result;
           resolve(pokemons);
-          console.log('Pokemons fetched successfully')
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject("Erro ao buscar pokemons");
         };
       })
-      .catch((error) => {
-        reject(error);
+      .catch(() => {
+        reject("Erro ao buscar pokemons");
       });
   });
 }
@@ -74,7 +72,7 @@ export function addMultipleCaughtPokemons(pokemons: CaughtPokemon[]): Promise<vo
             };
 
             request.onerror = () => {
-              innerReject(request.error);
+              innerReject('Erro ao adicionar pokemons');
             };
           });
 
@@ -84,16 +82,16 @@ export function addMultipleCaughtPokemons(pokemons: CaughtPokemon[]): Promise<vo
         Promise.all(promises)
           .then(() => {
             resolve();
-            console.log('Pokemons added successfully')
+
             handleDBChange()
 
           })
-          .catch((error) => {
-            reject(error);
+          .catch(() => {
+            reject('Erro ao adicionar pokemons');
           });
       })
-      .catch((error) => {
-        reject(error);
+      .catch(() => {
+        reject('Erro ao adicionar pokemons');
       });
   });
 }
@@ -109,16 +107,16 @@ export function removeCaughtPokemon(id: number): Promise<void> {
 
         request.onsuccess = () => {
           resolve();
-          console.log('Pokemon removed successfully')
+
           handleDBChange()
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject('Erro ao remover pokemon');
         };
       })
-      .catch((error) => {
-        reject(error);
+      .catch(() => {
+        reject('Erro ao remover pokemon');
       });
   });
 }
@@ -134,16 +132,15 @@ export function editCaughtPokemon(pokemon: CaughtPokemon): Promise<void> {
 
         request.onsuccess = () => {
           resolve();
-          console.log('Pokemon edited successfully')
           handleDBChange()
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject('Erro ao editar pokemon');
         };
       })
-      .catch((error) => {
-        reject(error);
+      .catch(() => {
+        reject('Erro ao editar pokemon');
       });
   });
 }
@@ -154,6 +151,6 @@ export function handleDBChange() {
       store.dispatch(updateCaughtPokemons(pokemons));
     })
     .catch((error) => {
-      console.error('Erro ao obter os Pokémon:', error);
+      console.error(error);
     });
 }

@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 import { CaughtPokemon } from '../interfaces/pokemon'
 import { removeCaughtPokemon } from '../services/database'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface PokemonCardProps {
   id: number
@@ -29,11 +31,10 @@ export default function PokemonCard(props: PokemonCardProps) {
     event.stopPropagation()
     removeCaughtPokemon(id)
     .then(() => {
-      console.log('Pokémon removido com sucesso!');
-     
+      toast.success('Pokemon removido com sucesso!')
     })
     .catch((error) => {
-      console.error('Erro ao remover Pokémon:', error);
+      toast.error(error);
     });
   }
   const handleSelectPokemon = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -50,6 +51,7 @@ export default function PokemonCard(props: PokemonCardProps) {
 
   return (
     <div>
+      <ToastContainer />
       <h1>{props.name}</h1>
       <h2>{ String(isSelected) }</h2>
       <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={props.name} />

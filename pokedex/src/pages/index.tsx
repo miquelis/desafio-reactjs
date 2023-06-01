@@ -10,6 +10,8 @@ import { RootState } from '../store'
 import CapturePokemonBar from '../components/CapturePokemonBar'
 import { Link } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Index() {
   const pokemon = useSelector((state: RootState) => state.pokemon)
@@ -79,12 +81,15 @@ export default function Index() {
       })
       setPokemonCards(pokemonsCards)
       
+    }).catch((error) => {
+      toast.error(error.message);
     })
 
   }, [searchParams])
 
   return (
     <>
+    <ToastContainer />
     <Link to={'/pokedex'}>Pokedex</Link>
     <input type="text" id="searchInput"         value={searchTerm}
         onChange={handleInputChange}

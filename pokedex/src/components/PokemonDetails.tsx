@@ -3,6 +3,8 @@ import { getPokemon } from "../services/pokemon"
 import { CaughtPokemon, Pokemon } from "../interfaces/pokemon"
 import { Link } from "react-router-dom"
 import { editCaughtPokemon } from "../services/database"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface PokemonDetailsProps {
   id: number | string
@@ -21,11 +23,10 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
 
     editCaughtPokemon(updatedPokemon)
       .then(() => {
-        console.log('Pokémon atualizado com sucesso!');
         setPokemonPhoto(photo)
       })
       .catch((error) => {
-        console.error('Erro ao atualizar Pokémon:', error);
+        toast.error(error);
       });
   }
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,9 +57,10 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
   }, [props.id])
   return (
     <div>
+      <ToastContainer />
       <img src={pokemonPhoto || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={pokemonDetail?.name} />
       <h2><Link to={`/?type=${pokemonDetail?.types[0]?.type.name}`} reloadDocument>{pokemonDetail?.types[0]?.type.name}</Link></h2>
-      {/*  */}
+     
       <label htmlFor="changePhoto">
         TROCAR
         

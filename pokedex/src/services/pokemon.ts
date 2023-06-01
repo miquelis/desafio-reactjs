@@ -15,7 +15,7 @@ export async function getPokemons() {
       }
     }) as PokemonSimple[]
   } catch (error) {
-    console.error(error)
+    throw new Error("Erro ao buscar pokemons")
   }
 }
 
@@ -31,7 +31,7 @@ export async function getPokemonsByType(type: string) {
       }
     }) as PokemonSimple[]
   } catch (error) {
-    console.error(error)
+    throw new Error("Erro ao buscar pokemons por tipo")
   }
 }
 
@@ -41,7 +41,7 @@ export async function getPokemon(id: string | number) {
     const pokemon = response.data as Pokemon
     return pokemon as Pokemon
   } catch (error) {
-    console.error(error)
+    throw new Error("Erro ao buscar pokemon")
   }
 }
 
@@ -51,6 +51,6 @@ export async function getAbilityShortEffect(id: string | number) {
     const ability = response.data
     return ability.effect_entries[0].short_effect as string
   } catch (error) {
-    console.error(error)
+    throw new Error("Erro ao buscar habilidade")
   }
 }

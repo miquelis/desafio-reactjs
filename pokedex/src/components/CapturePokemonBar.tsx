@@ -3,7 +3,8 @@ import { cleanSelectedPokemons } from '../store/modules/pokemonSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 import { addMultipleCaughtPokemons } from '../services/database'
-
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 export default function CapturePokemonBar() {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const dispatch = useDispatch()
@@ -11,15 +12,16 @@ export default function CapturePokemonBar() {
     addMultipleCaughtPokemons(pokemon.selectedPokemons as never)
     .then(() => {
       dispatch(cleanSelectedPokemons())
-      console.log('Lista de Pokémons adicionada com sucesso!');
+      toast.success('Pokemons capturados com sucesso!')
     })
     .catch((error) => {
-      console.error('Erro ao adicionar a lista de Pokémons:', error);
+      toast.error(error)
     });
     
   }
  return (
     <div className='CapturePokemonBar'>
+      <ToastContainer />
       <h1>{pokemon.selectedPokemons.length}</h1>
       <button onClick={()=>confirmCapture()}>Confirmar Captura</button>
     </div>
