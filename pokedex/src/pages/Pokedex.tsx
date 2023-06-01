@@ -10,16 +10,16 @@ export default function Pokedex() {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const [pokemonCards, setPokemonCards] = useState<ReactElement[]>([])
   const { isOpen, toggle } = useModal();
-  const [selectedPokemon, setSelectedPokemon] = useState<number>(0)
+  const [selectedPokemon, setSelectedPokemon] = useState<CaughtPokemon>()
 
   useEffect(() => {
-    const handleDetails =(id: number) => {
+    const handleDetails =(pokemon: CaughtPokemon) => {
       toggle()
-      setSelectedPokemon(id)
+      setSelectedPokemon(pokemon)
     }
     const pokemonCards = pokemon.caughtPokemons.map((pokemon: CaughtPokemon) => {
       return (
-        <li onClick={()=> handleDetails(pokemon.id)} key={pokemon.id}>
+        <li onClick={()=> handleDetails(pokemon)} key={pokemon.id}>
           <PokemonCard  {...pokemon} isPokedex={true} />
         </li>
       )
@@ -33,7 +33,7 @@ export default function Pokedex() {
       {pokemonCards} 
     </ul>
     <Modal  isOpen={isOpen} toggle={toggle}>
-      <PokemonDetails id={selectedPokemon} />
+      <PokemonDetails id={selectedPokemon?.id || 0} customPhoto={selectedPokemon?.customPhoto} />
     </Modal>
     </>
    
