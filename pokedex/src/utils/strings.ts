@@ -7,3 +7,22 @@ export function getNumberInsideBars(text: string) {
   }
   return Number(text) || 0;
 }
+
+export function translateBaseStat(baseStat: string) {
+  switch (baseStat) {
+    case "hp":
+      return "HP";
+    case "attack":
+      return "Ataque";
+    case "defense":
+      return "Defesa";
+    case "special-attack":
+      return "Ataque Especial";
+    case "special-defense":
+      return "Defesa Especial";
+    case "speed":
+      return "Velocidade";
+    default:
+      return baseStat;
+  }
+}

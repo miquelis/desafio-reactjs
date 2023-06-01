@@ -6,6 +6,7 @@ import { editCaughtPokemon } from "../services/database"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/PokemonDetails.css'
+import { translateBaseStat } from "../utils/strings"
 interface PokemonDetailsProps {
   id: number | string
   customPhoto?: string
@@ -17,7 +18,7 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
   const [pokemonAbilities, setPokemonAbilities] = useState<ReactElement[]>([])
   const [pokemonStats, setPokemonStats] = useState<ReactElement[]>([])
   const [pokemonEvolutions, setPokemonEvolutions] = useState<ReactElement[]>([])
-
+  const baseStats = ['hp', 'attack', 'defense', 'speed']
   const handleShortEffect = (abilityName: string) => () => {
    
     getAbilityShortEffect(abilityName).then((effect) => {
@@ -110,8 +111,11 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     })
     setPokemonAbilities(pokemonAbilities || [])
     const pokemonStats = pokemonDetail?.stats.map((stat) => {
+      if(!baseStats.includes(stat.stat.name)) {
+        return <></>
+      }
       return (
-        <li className="PokemonDetail__StatsItem" key={stat.stat.name}><h2 >{stat.stat.name}: {stat.base_stat}</h2></li>
+        <li className="PokemonDetail__StatsItem" key={stat.stat.name}><h2 >{translateBaseStat(stat.stat.name)}: {stat.base_stat}</h2></li>
       )
     })
     setPokemonStats(pokemonStats || [])
