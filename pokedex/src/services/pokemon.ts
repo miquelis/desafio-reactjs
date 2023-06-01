@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Ability, Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
+import { Ability, Evolution, EvolutionChain, Pokemon, PokemonPage, PokemonSimple } from '../interfaces/pokemon'
 import { getNumberInsideBars } from '../utils/strings'
 const BASE_URL = 'https://pokeapi.co/api/v2'
 
@@ -54,3 +54,41 @@ export async function getAbilityShortEffect(id: string | number) {
     throw new Error("Erro ao buscar habilidade")
   }
 }
+
+export async function getPokemonEvolution(pokemonName: string): Promise<Evolution[]> {
+  try {
+    const response = await axios.get(`${BASE_URL}/pokemon-species/${pokemonName}`);
+    const evolutionChainUrl = response.data.evolution_chain.url;
+    const evolutionChainResponse = await axios.get(evolutionChainUrl);
+    const evolutionChainData = await evolutionChainResponse.data;
+
+    const evolutions: Evolution[] = extractEvolutions(evolutionChainData.chain);
+
+    return evolutions;
+  } catch (error) {
+    throw new Error("Erro ao buscar evolução")
+  }
+}
+
+const extractEvolutions = (evolutionChain: EvolutionChain): Evolution[] => {
+  const evolutions: Evolution[] = [];
+  const extractEvolution = (evolutionData: EvolutionChain) => {
+    const { species } = evolutionData;
+    const evolution: Evolution = {
+      name: species.name,
+      id: getNumberInsideBars(species.url) || 0,
+    };
+
+    evolutions.push(evolution);
+
+    if (evolutionData.evolves_to.length > 0) {
+      evolutionData.evolves_to.forEach((nextEvolution) => {
+        extractEvolution(nextEvolution);
+      });
+    }
+  };
+
+  extractEvolution(evolutionChain);
+
+  return evolutions;
+};

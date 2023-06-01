@@ -5,6 +5,7 @@ import { CaughtPokemon } from '../interfaces/pokemon'
 import { removeCaughtPokemon } from '../services/database'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../styles/PokemonCard.css'
 
 interface PokemonCardProps {
   id: number
@@ -50,12 +51,17 @@ export default function PokemonCard(props: PokemonCardProps) {
 
 
   return (
-    <div>
+    <div className='PokemonCard'>
       <ToastContainer />
-      <h1>{props.name}</h1>
-      <h2>{ String(isSelected) }</h2>
-      <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={props.name} />
-      {props.isPokedex? <button onClick={(event)=>handleRemovePokemon(props.id, event)}>Remover</button>: <button onClick={(event) => handleSelectPokemon(event) } disabled={isCaught}>{ buttonText() }</button>}
+      <img className='PokemonCard__Image' src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={props.name} />
+      <div>
+        <h1 className='PokemonCard__Name'>{props.name}</h1>
+        
+      </div>
+      {props.isPokedex? 
+        <button onClick={(event)=>handleRemovePokemon(props.id, event)}>Remover</button>: 
+        <button onClick={(event) => handleSelectPokemon(event) } disabled={isCaught}>{ buttonText() }</button>
+      }
       
     </div>
   )

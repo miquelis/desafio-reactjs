@@ -99,3 +99,16 @@ export interface CaughtPokemon {
   name: string;
   customPhoto: string;
 }
+
+export interface Evolution {
+  name: string;
+  id: number;
+}
+
+export interface EvolutionChain {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionChain[];
+}

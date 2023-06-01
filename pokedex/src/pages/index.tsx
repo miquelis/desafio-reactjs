@@ -1,5 +1,5 @@
+import '../styles/index.css'
 import { ReactElement, useEffect, useState, useCallback } from 'react'
-import '../styles/App.css'
 import { getPokemons, getPokemon, getPokemonsByType } from '../services/pokemon'
 import PokemonCard from '../components/PokemonCard'
 import Modal from '../components/Modal'
@@ -89,20 +89,34 @@ export default function Index() {
 
   return (
     <>
-    <ToastContainer />
-    <Link to={'/pokedex'}>Pokedex</Link>
-    <input type="text" id="searchInput"         value={searchTerm}
-        onChange={handleInputChange}
-        placeholder="Digite um nome ou número" />
-         <button onClick={searchPokemon}>Buscar</button>
-      <ul>
-        {!searchResults? pokemonCards:searchResults}
-        
-      </ul>
-      { pokemon.selectedPokemons.length > 0 && <CapturePokemonBar />}
+      <ToastContainer />
       <Modal  isOpen={isOpen} toggle={toggle}>
         <PokemonDetails id={selectedPokemon} />
       </Modal>
+      
+      <header>
+        <div className='flex'>
+          <Link to={'/'}>Inicio</Link>
+          <Link to={'/pokedex'}>Pokedex</Link>
+        </div>
+        <div className='flex'>
+          <input type="text" id="searchInput" 
+            value={searchTerm}
+            onChange={handleInputChange}
+            placeholder="Digite um nome ou número" />
+          <button onClick={searchPokemon}>Buscar</button>
+        </div>
+      </header>
+
+      <main>
+        <ul className='Pokemon__List'>
+          {!searchResults? pokemonCards:searchResults}
+        </ul>
+      </main>
+      
+      <footer>
+        { pokemon.selectedPokemons.length > 0 && <CapturePokemonBar />}
+      </footer>
     </>
   )
 }

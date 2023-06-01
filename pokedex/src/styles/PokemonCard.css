@@ -1,0 +1,22 @@
+.PokemonCard{
+  cursor: pointer;
+  background-color: beige;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.PokemonCard__Image{
+  width: 250px;
+  object-fit: cover;
+  display: block;
+  margin: auto;
+}
+
+.PokemonCard__Name{
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: -0.8rem 0 1rem 0;
+}
+.PokemonCard__Name::first-letter{
+  text-transform: uppercase;
+}

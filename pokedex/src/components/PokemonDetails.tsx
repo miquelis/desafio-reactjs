@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
-import { getPokemon } from "../services/pokemon"
+import { ReactElement, useEffect, useState } from "react"
+import { getPokemon, getPokemonEvolution } from "../services/pokemon"
 import { CaughtPokemon, Pokemon } from "../interfaces/pokemon"
 import { Link } from "react-router-dom"
 import { editCaughtPokemon } from "../services/database"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import '../styles/PokemonDetails.css'
 interface PokemonDetailsProps {
   id: number | string
   customPhoto?: string
@@ -13,6 +13,10 @@ interface PokemonDetailsProps {
 export default function PokemonDetails(props: PokemonDetailsProps) {
   const [pokemonDetail, setPokemonDetail] = useState<Pokemon>()
   const [pokemonPhoto, setPokemonPhoto] = useState<string>(props.customPhoto || '')
+  const [pokemonTypes, setPokemonTypes] = useState<ReactElement[]>([])
+  const [pokemonAbilities, setPokemonAbilities] = useState<ReactElement[]>([])
+  const [pokemonStats, setPokemonStats] = useState<ReactElement[]>([])
+  const [pokemonEvolutions, setPokemonEvolutions] = useState<ReactElement[]>([])
   const changePokemonPhoto = (photo: string) => {
 
     const updatedPokemon: CaughtPokemon = {
@@ -51,21 +55,87 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
       if (!pokemon) {
         return
       }
-      setPokemonDetail(pokemon)
-    }
-    )
+      setPokemonDetail(pokemon)      
+    }).catch((error) => {
+      toast.error(error.message);
+    })
+
+    
   }, [props.id])
+  useEffect(() => {
+    if (!pokemonDetail) {
+      return
+    }
+    getPokemonEvolution(pokemonDetail.name).then((evolution) => {
+      if (!evolution) {
+        return
+      }
+      const pokemonEvolutions = evolution.map((pokemon) => {
+        return (
+          <li className="PokemonDetail__EvolutionItem" key={pokemon.id}>
+            <img className="PokemonDetail__EvolutionImage" src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`} alt={pokemon.name} />
+            <h2 className="PokemonDetail__EvolutionName">{pokemon.name}</h2>
+          </li>
+        )}
+      )
+      setPokemonEvolutions(pokemonEvolutions || [])
+    }).catch((error) => {
+      toast.error(error.message);
+    })
+    const pokemonTypes = pokemonDetail?.types.map((type) => {
+      return (
+        <li className="PokemonDetails__Item" key={type.type.name}><Link to={`/?type=${type.type.name}`} reloadDocument >{type.type.name}</Link></li>
+      )
+    })
+    setPokemonTypes(pokemonTypes || [])
+    const pokemonAbilities = pokemonDetail?.abilities.map((ability) => {
+      return (
+        <li className="PokemonDetails__Item" key={ability.ability.name}>{ability.ability.name}</li>
+      )
+    })
+    setPokemonAbilities(pokemonAbilities || [])
+    const pokemonStats = pokemonDetail?.stats.map((stat) => {
+      return (
+        <li className="PokemonDetail__StatsItem" key={stat.stat.name}><h2 >{stat.stat.name}: {stat.base_stat}</h2></li>
+      )
+    })
+    setPokemonStats(pokemonStats || [])
+  }, [pokemonDetail])
   return (
-    <div>
+    <div className="PokemonDetails">
       <ToastContainer />
-      <img src={pokemonPhoto || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} alt={pokemonDetail?.name} />
-      <h2><Link to={`/?type=${pokemonDetail?.types[0]?.type.name}`} reloadDocument>{pokemonDetail?.types[0]?.type.name}</Link></h2>
-     
-      <label htmlFor="changePhoto">
-        TROCAR
+      <div className="PokemonDetails__Header">
+        <img className="PokemonDetails__Image" src={pokemonPhoto || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} 
+        alt={pokemonDetail?.name} />
+      </div>
+      <div className="PokemonDetails__Bio">
+        <h1 className="PokemonDetails__Name">{pokemonDetail?.name}</h1>
+        <ul className="PokemonDetails__List">
+          {pokemonTypes}
+        </ul>
+        <div className="PokemonDetail__Stature">
+          <h2>Peso: {pokemonDetail && pokemonDetail?.weight / 10} KG</h2>
+          <h2>Tamanho: {pokemonDetail && pokemonDetail?.height / 10} M</h2>
+        </div>
         
-      </label>
-      <input id="changePhoto" name="changePhoto" type="file" onChange={handleFileChange} style={{display: 'none'}} />
+        <ul className="PokemonDetail__Stats">
+          {pokemonStats}
+        </ul>
+        <ul className="PokemonDetails__List">
+          {pokemonAbilities}
+        </ul>
+        <div>
+          <ul className="PokemonDetails__List">
+            {pokemonEvolutions}
+          </ul>
+        </div>
+        <label htmlFor="changePhoto" >
+          <button className="PokemonDetails__ChangePhoto">Trocar Foto</button> 
+          
+        </label>
+        <input id="changePhoto" name="changePhoto" type="file" onChange={handleFileChange} style={{display: 'none'}} />
+      </div>
+      
     </div>
   )
 }

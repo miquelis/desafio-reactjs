@@ -6,6 +6,7 @@ import { CaughtPokemon } from '../interfaces/pokemon'
 import PokemonCard from '../components/PokemonCard'
 import useModal from '../hooks/useModal'
 import Modal from '../components/Modal'
+import { Link } from 'react-router-dom'
 export default function Pokedex() {
   const pokemon = useSelector((state: RootState) => state.pokemon)
   const [pokemonCards, setPokemonCards] = useState<ReactElement[]>([])
@@ -29,12 +30,16 @@ export default function Pokedex() {
   }, [pokemon.caughtPokemons])
   return (
     <>
-     <ul>
-      {pokemonCards} 
-    </ul>
-    <Modal  isOpen={isOpen} toggle={toggle}>
-      <PokemonDetails id={selectedPokemon?.id || 0} customPhoto={selectedPokemon?.customPhoto} />
-    </Modal>
+      <div className='flex'>
+        <Link to={'/'}>Inicio</Link>
+        <Link to={'/pokedex'}>Pokedex</Link>
+      </div>
+      <ul className='Pokemon__List'>
+        {pokemonCards} 
+      </ul>
+      <Modal  isOpen={isOpen} toggle={toggle}>
+        <PokemonDetails id={selectedPokemon?.id || 0} customPhoto={selectedPokemon?.customPhoto} />
+      </Modal>
     </>
    
   )

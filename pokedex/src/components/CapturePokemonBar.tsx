@@ -22,7 +22,7 @@ export default function CapturePokemonBar() {
  return (
     <div className='CapturePokemonBar'>
       <ToastContainer />
-      <h1>{pokemon.selectedPokemons.length}</h1>
+      <h1 className='CapturePokemonBar__Text'>{pokemon.selectedPokemons.length}</h1>
       <button onClick={()=>confirmCapture()}>Confirmar Captura</button>
     </div>
   )
