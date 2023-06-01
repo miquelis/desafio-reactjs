@@ -5,4 +5,5 @@ export function getNumberInsideBars(text: string) {
     const numero = match[1];
     return Number(numero) || 0;
   }
+  return Number(text) || 0;
 }
