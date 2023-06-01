@@ -89,3 +89,7 @@ button:focus-visible {
   margin: 0;
   margin-top: 2rem;
 }
+
+.pointer {
+  cursor: pointer;
+}

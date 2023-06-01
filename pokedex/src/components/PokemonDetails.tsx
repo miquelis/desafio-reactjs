@@ -105,7 +105,7 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     setPokemonTypes(pokemonTypes || [])
     const pokemonAbilities = pokemonDetail?.abilities.map((ability) => {
       return (
-        <li className="PokemonDetails__Item" onClick={handleShortEffect(ability.ability.name)} key={ability.ability.name}>{ability.ability.name}</li>
+        <li className="PokemonDetails__Item pointer" onClick={handleShortEffect(ability.ability.name)} key={ability.ability.name}>{ability.ability.name}</li>
       )
     })
     setPokemonAbilities(pokemonAbilities || [])
