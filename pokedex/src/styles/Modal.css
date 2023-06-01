@@ -2,16 +2,13 @@
   position: fixed;
   z-index: 50;
   width: 100%;
-  padding: 1rem;
   overflow-x: hidden;
   overflow-y: auto;
   inset: 0px;
-  height: 100vh;
+  height: 100%;
   max-height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
 }
-
-
 
 .Modal__Box{
   position: relative;
@@ -19,9 +16,18 @@
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   width: 100%;
-  max-width: 42rem;
+  max-width: 90%;
   max-height: 100%;
   margin-left: auto;
   margin-right: auto;  
   margin-top: 2.5rem;
+}
+@media (min-width: 1024px) { 
+  .Modal__Box{
+
+    width: 100%;
+    max-width: 42rem;
+
+  }
+
 }

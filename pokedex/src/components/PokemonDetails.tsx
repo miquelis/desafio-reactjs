@@ -112,7 +112,7 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     setPokemonAbilities(pokemonAbilities || [])
     const pokemonStats = pokemonDetail?.stats.map((stat) => {
       if(!baseStats.includes(stat.stat.name)) {
-        return <></>
+        return <li key={stat.stat.name}></li>
       }
       return (
         <li className="PokemonDetail__StatsItem" key={stat.stat.name}><h2 >{translateBaseStat(stat.stat.name)}: {stat.base_stat}</h2></li>

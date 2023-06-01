@@ -57,10 +57,16 @@ h2{
 }
 
 .PokemonDetail__EvolutionImage{
-  width: 130px;
+  width: 100px;
   object-fit: cover;
   display: block;
   margin: auto;
+}
+@media (min-width: 512px) { 
+  .PokemonDetail__EvolutionImage{
+    width: 130px;
+
+  }
 }
 
 .PokemonDetail__EvolutionItem{
