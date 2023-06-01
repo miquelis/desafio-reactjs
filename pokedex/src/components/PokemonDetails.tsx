@@ -1,9 +1,9 @@
 import { ReactElement, useEffect, useState } from "react"
-import { getPokemon, getPokemonEvolution } from "../services/pokemon"
+import { getAbilityShortEffect, getPokemon, getPokemonEvolution } from "../services/pokemon"
 import { CaughtPokemon, Pokemon } from "../interfaces/pokemon"
 import { Link } from "react-router-dom"
 import { editCaughtPokemon } from "../services/database"
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/PokemonDetails.css'
 interface PokemonDetailsProps {
@@ -17,6 +17,16 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
   const [pokemonAbilities, setPokemonAbilities] = useState<ReactElement[]>([])
   const [pokemonStats, setPokemonStats] = useState<ReactElement[]>([])
   const [pokemonEvolutions, setPokemonEvolutions] = useState<ReactElement[]>([])
+
+  const handleShortEffect = (abilityName: string) => () => {
+   
+    getAbilityShortEffect(abilityName).then((effect) => {
+      toast.info(effect)
+    }).catch((error) => {
+      toast.error(error.message);
+    })
+   
+  }
   const changePokemonPhoto = (photo: string) => {
 
     const updatedPokemon: CaughtPokemon = {
@@ -50,6 +60,9 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     }
   }
 
+
+
+
   useEffect(() => {
     getPokemon(props.id).then((pokemon) => {
       if (!pokemon) {
@@ -63,9 +76,11 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     
   }, [props.id])
   useEffect(() => {
+    
     if (!pokemonDetail) {
       return
     }
+    
     getPokemonEvolution(pokemonDetail.name).then((evolution) => {
       if (!evolution) {
         return
@@ -90,7 +105,7 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
     setPokemonTypes(pokemonTypes || [])
     const pokemonAbilities = pokemonDetail?.abilities.map((ability) => {
       return (
-        <li className="PokemonDetails__Item" key={ability.ability.name}>{ability.ability.name}</li>
+        <li className="PokemonDetails__Item" onClick={handleShortEffect(ability.ability.name)} key={ability.ability.name}>{ability.ability.name}</li>
       )
     })
     setPokemonAbilities(pokemonAbilities || [])
@@ -103,7 +118,7 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
   }, [pokemonDetail])
   return (
     <div className="PokemonDetails">
-      <ToastContainer />
+      
       <div className="PokemonDetails__Header">
         <img className="PokemonDetails__Image" src={pokemonPhoto || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${props.id}.png`} 
         alt={pokemonDetail?.name} />
