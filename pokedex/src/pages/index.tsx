@@ -41,7 +41,8 @@ export default function Index() {
           <PokemonCard {...pokemon} />
         </li>
       ])
-      
+    }).catch((error) => {
+      toast.error(error.message);
     })
   }
   const handleDetails = useCallback((id: number) => {
