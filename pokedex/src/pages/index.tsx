@@ -142,7 +142,7 @@ export default function Index() {
         <ul className='Pokemon__List'>
           {!searchResults? pokemonCards:searchResults}
         </ul>
-        {isVisible && <button onClick={loadMore}>Carregar Mais</button>}
+        {isVisible && <button className='Pokemon__LoadMore' onClick={loadMore}>Carregar Mais</button>}
         
       </main>
       

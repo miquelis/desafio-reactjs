@@ -34,6 +34,7 @@ export default function Pokedex() {
         <Link to={'/'}>Inicio</Link>
         <Link to={'/pokedex'}>Pokedex</Link>
       </div>
+      {pokemon.caughtPokemons.length === 0 && <h1>Pokedex vazia, procure mais pokemons!</h1>}
       <ul className='Pokemon__List'>
         {pokemonCards} 
       </ul>

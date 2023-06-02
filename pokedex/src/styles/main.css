@@ -110,3 +110,7 @@ button:focus-visible {
     
   }
 }
+
+.Pokemon__LoadMore{
+  margin-bottom: 4rem;
+}
