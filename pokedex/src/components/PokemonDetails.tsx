@@ -143,13 +143,13 @@ export default function PokemonDetails(props: PokemonDetailsProps) {
         <ul className="PokemonDetails__List">
           {pokemonAbilities}
         </ul>
-        <div>
+        <div className="PokemonDetail__EvolutionContainer">
           <ul className="PokemonDetails__List">
             {pokemonEvolutions}
           </ul>
         </div>
-        <label htmlFor="changePhoto" >
-          <button className="PokemonDetails__ChangePhoto">Trocar Foto</button> 
+        <label htmlFor="changePhoto" className="PokemonDetails__LabelPhoto">
+         Trocar Foto
           
         </label>
         <input id="changePhoto" name="changePhoto" type="file" onChange={handleFileChange} style={{display: 'none'}} />
