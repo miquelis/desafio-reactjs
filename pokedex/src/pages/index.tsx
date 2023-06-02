@@ -21,6 +21,8 @@ export default function Index() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<ReactElement[]|null>(null);
   const [searchParams] = useSearchParams();
+  const [nextPage, setNextPage] = useState<string>('');
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
  
     setSearchTerm(event.target.value.trim());
@@ -29,13 +31,14 @@ export default function Index() {
   const searchPokemon = () => {
     if (searchTerm === '') {
       setSearchResults(null)
+      setIsVisible(true)
       return
     }
     getPokemon(searchTerm).then((pokemon) => {
       if (!pokemon) {
         return
       }
-      
+      setIsVisible(false)
       setSearchResults([
         <li onClick={() => handleDetails(pokemon.id)} key={pokemon.id}>
           <PokemonCard {...pokemon} />
@@ -57,6 +60,8 @@ export default function Index() {
         if (!pokemons) {
           return
         }
+        
+      
         const pokemonsCards = pokemons.map((pokemon) => {
           return (
             <li onClick={()=> handleDetails(pokemon.id)} key={pokemon.id}>
@@ -73,7 +78,9 @@ export default function Index() {
       if (!pokemons) {
         return
       }
-      const pokemonsCards = pokemons.map((pokemon) => {
+      setIsVisible(true)
+      setNextPage(pokemons.nextPage)
+      const pokemonsCards = pokemons.pokemons.map((pokemon) => {
         return (
           <li onClick={()=> handleDetails(pokemon.id)} key={pokemon.id}>
             <PokemonCard  {...pokemon} />
@@ -81,12 +88,34 @@ export default function Index() {
        )
       })
       setPokemonCards(pokemonsCards)
-      
     }).catch((error) => {
       toast.error(error.message);
     })
 
   }, [searchParams])
+
+  const loadMore = () => {
+      
+    getPokemons(nextPage).then((pokemons) => {
+      if (!pokemons) {
+        return
+      }
+      setNextPage(pokemons.nextPage)
+      const pokemonsCards = pokemons.pokemons.map((pokemon) => {
+        return (
+          <li onClick={()=> handleDetails(pokemon.id)} key={pokemon.id}>
+            <PokemonCard  {...pokemon} />
+          </li>
+       )
+      })
+      setPokemonCards(prevState => [...prevState, ...pokemonsCards])
+      
+    }).catch((error) => {
+      toast.error(error.message);
+    })
+  }
+
+
 
   return (
     <>
@@ -113,6 +142,8 @@ export default function Index() {
         <ul className='Pokemon__List'>
           {!searchResults? pokemonCards:searchResults}
         </ul>
+        {isVisible && <button onClick={loadMore}>Carregar Mais</button>}
+        
       </main>
       
       <footer>

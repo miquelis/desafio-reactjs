@@ -9,6 +9,7 @@ export interface PokemonSimple {
   id: number;
   name: string;
   url: string;
+  nextPage?: string;
 }
 
 export interface Pokemon {

@@ -3,17 +3,20 @@ import { Evolution, EvolutionChain, Pokemon, PokemonPage, PokemonSimple } from '
 import { getNumberInsideBars } from '../utils/strings'
 const BASE_URL = 'https://pokeapi.co/api/v2'
 
-export async function getPokemons() {
+export async function getPokemons(url?: string) {
   try {
-    const response = await axios.get(`${BASE_URL}/pokemon/?limit=20&offset=0`)
+    const response = await axios.get(url || `${BASE_URL}/pokemon/?limit=20&offset=0`)
     const pokemonPage = response.data as PokemonPage
-    return pokemonPage.results.map(pokemon => {
-      return {
-        id: getNumberInsideBars(pokemon.url),
-        name: pokemon.name,
-        url: pokemon.url
-      }
-    }) as PokemonSimple[]
+    return {
+      nextPage: pokemonPage.next, pokemons: pokemonPage.results.map(pokemon => {
+        return {
+          id: getNumberInsideBars(pokemon.url),
+          name: pokemon.name,
+          url: pokemon.url,
+
+        }
+      }) as PokemonSimple[]
+    }
   } catch (error) {
     throw new Error("Erro ao buscar pokemons")
   }
